@@ -2,7 +2,7 @@
 /**
 *printing a simple program using puts function
 *
-* main-entry point
+* main - entry point
 *
 *return: always zero(success)
 */
