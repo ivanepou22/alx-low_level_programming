@@ -1,8 +1,8 @@
 #include <stdio.h>
 /**
-* printing a simple program using puts function
-* main - entry point.
-* return: always zero(success)
+*main - entry point.
+*Description: Prints the description specified
+*return: always zero(success)
 */
 int main(void)
 {
