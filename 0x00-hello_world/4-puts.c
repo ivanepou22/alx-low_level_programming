@@ -2,7 +2,7 @@
 /**
 *main - entry point.
 *Description: Prints the description specified
-*return: always zero(success)
+*Return: always zero(success)
 */
 int main(void)
 {
