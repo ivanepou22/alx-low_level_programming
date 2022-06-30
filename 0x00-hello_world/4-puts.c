@@ -1,11 +1,15 @@
 #include <stdio.h>
-/**
+/** 
  *
- * main - Prints quote
+ *  * printing a simple program using puts function
  *
- * Return: zero on success
+ *   * main-entry point
  *
- */
+ *    *
+ *
+ *     * return: always zero(success)
+ *
+ *      */
 int main(void) 
 {
 puts("\"Programming is like building a multilingual puzzle");
