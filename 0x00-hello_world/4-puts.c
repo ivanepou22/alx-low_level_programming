@@ -1,8 +1,9 @@
 #include <stdio.h>
 /**
 *using a put function in c
+*printing a simple program using puts function.
 *
-*main: entry point
+* main: entry point.
 *Return: always zero on success
 */
 int main(void)
