@@ -1,10 +1,8 @@
 #include <stdio.h>
 /**
-*printing a simple program using puts function
-*
-* main - entry point
-*
-*return: always zero(success)
+* printing a simple program using puts function
+* main - entry point.
+* return: always zero(success)
 */
 int main(void)
 {
