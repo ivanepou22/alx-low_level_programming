@@ -1,5 +1,6 @@
 #include <stdio.h>
 /**
+*using a put function in c
 *main: entry point
 *Return: always zero on success
 */
