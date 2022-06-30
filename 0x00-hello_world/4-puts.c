@@ -1,10 +1,10 @@
 #include <stdio.h>
-/**
-*using a put function in c
-*printing a simple program using puts function.
+/** 
+*printing a simple program using puts function
 *
-* main: entry point.
-*Return: always zero on success
+* main-entry point
+*
+*return: always zero(success)
 */
 int main(void)
 {
