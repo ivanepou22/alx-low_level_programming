@@ -27,9 +27,9 @@ int main(void)
 
 	while (count <= 98)
 	{
-		carry = (a + b) / 1000;
-		c = (a + b) - carry * 1000;
-		z = (x + y) + carry;
+		take = (a + b) / 1000;
+		c = (a + b) - take * 1000;
+		z = (x + y) + take;
 		x = y;
 		y = z;
 		a = b;
