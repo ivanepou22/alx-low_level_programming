@@ -20,7 +20,7 @@ int main(void)
 		x = y;
 		y = z;
 
-		if (z & 2 == 0)
+		if (z % 2 == 0)
 			sum += z;
 	}
 	printf("%lu\n", sum);
