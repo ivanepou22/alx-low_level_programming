@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stdio.h>
 /**
 *main - print sum of all multiples of 3 and 5 up to 1024
 *@void: Empty parameter list for main
