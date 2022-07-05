@@ -3,7 +3,7 @@
 *times_table - prints times table up to 9
 *Return: void
 */
-int times_table(void)
+void times_table(void)
 {
 	int a, b, product;
 
@@ -21,17 +21,17 @@ int times_table(void)
 			}
 			if (product >= 10)
 			{
-				_putchar((prod / 10) + '0');
-				_putchar((prod % 10) + '0');
+				_putchar((product / 10) + '0');
+				_putchar((product % 10) + '0');
 			}
 			else if ((product < 10) && (b != 0))
 			{
 				_putchar(' ');
-				_putchar((prod % 10) + '0');
+				_putchar((product % 10) + '0');
 			}
 			else
 			{
-				_putchar((prod % 10) + '0');
+				_putchar((product % 10) + '0');
 			}
 		}
 		_putchar('\n');
