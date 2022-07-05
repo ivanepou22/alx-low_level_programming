@@ -10,11 +10,9 @@ int main(void)
 	int count;
 
 	unsigned long x, y, z;
-	
+
 	x = 0;
-
 	y = 1;
-
 	for (count = 1; count <= 49; count++)
 	{
 		z = x + y;
