@@ -5,28 +5,25 @@
 #include "main.h"
 
 /**
-*generationRandomPassword - Randomly generate passwords.
-*@N: password length.
-*Decription: Function to randomly generates password.
+*main - Randomly generate pass
+*Decription: Program to randomly generates password.
 *Return: nothing
 */
 
-int main()
+int main(void)
 {
-	generationRandomPassword(15);
-	return (0);
-}
+	int pass, sum;
 
-void generationRandomPassword(int N)
-{
-	char list[] = "1234567890qwertyuiopasdfghjklzxcvbnm!@#$%^&*()_- +=QWERTYUIOPASDFGHJKLZXCVBNM[]{};':\"<>,.?/|";
-
-	int i;
-	
 	srand(time(NULL));
 
-	for (i = 0; i < N; i++)
+	sum = 0;
+
+	while (sum <= 2645)
 	{
-		printf("%c", list[rand() % (sizeof(list) - 1)]);
+		pass = (rand() % 128);
+		sum += pass;
+		printf("%c", pass);
 	}
+	printf("%c", 2772 - sum);
+	return (0);
 }
