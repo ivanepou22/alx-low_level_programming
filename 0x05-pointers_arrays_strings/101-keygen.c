@@ -13,11 +13,11 @@
 
 void generationRandomPassword(int N)
 {
-	char list[] = "1234567890qwertyuiopasdfghjklzxcvbnm!@#$%^&*()_- +=QWERTYUIOPASDFGHJKLZXCVBNM[]{};':\"<>,.?/\|";
+	char list[] = "1234567890qwertyuiopasdfghjklzxcvbnm!@#$%^&*()_- +=QWERTYUIOPASDFGHJKLZXCVBNM[]{};':\"<>,.?/|";
 
 	srand(time(NULL));
 
-	for (int i = 0; i < password_length; i++)
+	for (int i = 0; i < N; i++)
 	{
 		printf("%c", list[rand() % (sizeof(list) - 1)]);
 	}
