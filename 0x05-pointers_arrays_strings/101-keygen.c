@@ -13,7 +13,7 @@
 
 int main()
 {
-	generationRandomPassword(20);
+	generationRandomPassword(15);
 	return (0);
 }
 
