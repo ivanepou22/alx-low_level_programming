@@ -29,5 +29,4 @@ void generationRandomPassword(int N)
 	{
 		printf("%c", list[rand() % (sizeof(list) - 1)]);
 	}
-	printf("\n");
 }
