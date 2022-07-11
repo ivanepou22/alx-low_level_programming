@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "main.h"
 
 /**
 *generationRandomPassword - Randomly generate passwords.
@@ -10,6 +9,12 @@
 *Decription: Function to randomly generates password.
 *Return: nothing
 */
+
+int main()
+{
+	generationRandomPassword(20);
+	return (0);
+}
 
 void generationRandomPassword(int N)
 {
