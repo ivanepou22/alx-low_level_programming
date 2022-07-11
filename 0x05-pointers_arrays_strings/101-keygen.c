@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "main.h"
 
 /**
 *generationRandomPassword - Randomly generate passwords.
