@@ -15,9 +15,9 @@ void generationRandomPassword(int N)
 {
 	char list[] = "1234567890qwertyuiopasdfghjklzxcvbnm!@#$%^&*()_- +=QWERTYUIOPASDFGHJKLZXCVBNM[]{};':\"<>,.?/|";
 
-	srand(time(NULL));
-
 	int i;
+	
+	srand(time(NULL));
 
 	for (i = 0; i < N; i++)
 	{
