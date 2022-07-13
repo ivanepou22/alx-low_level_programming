@@ -1,4 +1,7 @@
 #include <unistd.h>
+#ifndef _main_H_
+#define _main_H_
+
 /**
 *reset_to_98 - takes pointer int and update the value to 98
 */
