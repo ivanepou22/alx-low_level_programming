@@ -3,7 +3,7 @@
 /**
 * cap_string - capitalizes all words of a string
 * @s: input string.
-* Return: the pointer to dest.
+* Return: the sring.
 */
 
 char *cap_string(char *s)
