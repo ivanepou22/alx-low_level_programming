@@ -1,11 +1,4 @@
-#include "main.h"
 #include <stdio.h>
-
-/**
-* main - Entry point.
-* Description: program prints a[2] = 98, followed by a new line.
-* Return: zero on success
-*/
 
 int main(void)
 {
