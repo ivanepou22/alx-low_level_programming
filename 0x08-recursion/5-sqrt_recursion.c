@@ -8,13 +8,13 @@
 * Return: square root of n or -1 if none.
 */
 
-int sqr_con(int n, int i)
+int sqr(int n, int i)
 {
 	if (n == i * i)
 		return (i);
 	else if (n < i * i)
 		return (-1);
-	return (sqr_con(n, i + 1));
+	return (sqr(n, i + 1));
 }
 
 /**
@@ -28,5 +28,5 @@ int _sqrt_recursion(int n)
 {
 	if (n < 0)
 		return (-1);
-	return (sqr_con(n, 0));
+	return (sqr(n, 0));
 }
