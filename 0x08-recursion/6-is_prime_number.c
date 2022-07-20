@@ -16,3 +16,17 @@ int primeNum(int n, int i)
 		return (primeNum(n, i + 1));
 	return (1);
 }
+
+/**
+* is_prime_number - determine if n is a prime
+* @n: number to check
+* Description: determine if n is a prime
+* Return: 1 if prime, 0 if not
+*/
+
+int is_prime_number(int n)
+{
+	if (n < 2)
+		return (0);
+	return (primeNum(n, 2));
+}
