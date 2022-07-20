@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
-* sqr_con - finds square root of n
+* sqr - finds square root of n
 * @n: number to square
 * @i: test case for root
 * Description: find square root of n using recursion and two variables
