@@ -16,7 +16,7 @@ int findword(char *s)
 	return (i);
 }
 /**
- * wordlen - find length of word
+ * wordlen - Find length of word
  * @s: string
  * Return: length of word
  **/
@@ -30,7 +30,7 @@ int wordlen(char *s)
 	return (i);
 }
 /**
- * word_count - find number of words in string
+ * word_count - Find number of words in string
  * @s: string
  * @word: switch used to track if currently in word
  * Return: number of words in string
