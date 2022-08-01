@@ -3,7 +3,7 @@
 #include <stdio.h>
 /**
  * free_dog - free dog from memory
- * @hobbes: dog object
+ * @d: dog object
  * Return: nothing
  **/
 void free_dog(dog_t *d)
