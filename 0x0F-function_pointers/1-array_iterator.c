@@ -1,8 +1,3 @@
-/*
- * File: 1-array_iterator.c
- * Author: Brian Bassey
- */
-
 #include "function_pointers.h"
 
 /**
