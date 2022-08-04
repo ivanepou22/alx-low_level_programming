@@ -1,67 +1,52 @@
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "variadic_functions.h"
 
-void i_print(va_list i)
+/**
+ * print_all - prints anything.
+ * @format: a list of types of arguments passed to the function.
+ * Return: no return.
+ */
+void print_all(const char *const format, ...)
 {
-	printf("%d", va_arg(i, int);
-}
+	va_list valist;
+	unsigned int i = 0, j, c = 0;
+	char *str;
+	const char t_arg[] = "cifs";
 
-void c_print(va_list i)
-{
-	printf("%c", va_arg(i, char);
-}
-
-void f_print(va_list i)
-{
-	printf("%f", va_arg(i, float);
-}
-
-void s_print(va_list i)
-{
-	if (va_arg(i, char *) == NULL)
-		printf("(nil");
-	else
-		printf("%s", va_arg(i, char *);
-}
-
-typedef struct print
-{
-	char var;
-	void (*func)(va_list);
-}print_t;
-
-void print_one(char a, va_list ap)
-{
-	int i;
-	print_t list[] = {
-		{'c', i_print},
-		{'i', c_print},
-		{'f', f_print},
-		{'s', s_print},
-		{NULL, NULL},
-	};
-
-	i = 0;
-	while (i < 4)
+	va_start(valist, format);
+	while (format && format[i])
 	{
-		if (a = list.var[i])
-			list.func[i](ap);
+		j = 0;
+		while (t_arg[j])
+		{
+			if (format[i] == t_arg[j] && c)
+			{
+				printf(", ");
+				break;
+			}
+			j++;
+		}
+		switch (format[i])
+		{
+		case 'c':
+			printf("%c", va_arg(valist, int)), c = 1;
+			break;
+		case 'i':
+			printf("%d", va_arg(valist, int)), c = 1;
+			break;
+		case 'f':
+			printf("%f", va_arg(valist, double)), c = 1;
+			break;
+		case 's':
+			str = va_arg(valist, char *), c = 1;
+			if (!str)
+			{
+				printf("(nil)");
+				break;
+			}
+			printf("%s", str);
+			break;
+		}
 		i++;
 	}
-}
-
-
-/**
- * print_all - print any type
- * @format - type of variable to print
- * Return: void
- **/
-void print_all(const char * const format, ...)
-{
-	int i;
-
-	i = 0;
-	while (i < for
+	printf("\n"), va_end(valist);
 }
