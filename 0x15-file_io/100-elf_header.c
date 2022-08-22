@@ -1,246 +1,315 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include "main.h"
 #include <elf.h>
 
+void ptitle(char *title);
+
 /**
- * print_addr - prints address
- * @ptr: magic.
- * Return: no return.
- */
-void print_addr(char *ptr)
+* errors - prints some errors
+* @msg: the error msg
+* Return: void
+*/
+void errors(char *msg)
 {
-	int i;
-	int begin;
-	char sys;
+	/* declarations */
+	int len;
+
+	/* writing the error */
+	for (len = 0; msg[len]; len++)
+		;
+	write(STDERR_FILENO, msg, len);
+	exit(98);
+}
+/**
+  * ptype - prints type
+  *
+  *@buffer: contains type info
+  * Return: void
+  */
+void ptype(char *buffer)
+{
+	ptitle("Type");
+switch (buffer[6])
+	{
+		case ET_NONE:
+			printf("NONE (None)");
+			break;
+		case ET_REL:
+			printf("REL (Relocatable file)");
+			break;
+		case ET_EXEC:
+			printf("EXEC (Executable file)");
+			break;
+		case ET_DYN:
+			printf("DYN (Shared object file)");
+			break;
+		case ET_CORE:
+			printf("CORE (Core file)");
+			break;
+		default:
+			printf("<unknown>: %x", buffer[6]);
+		break;
+	}
+	printf("\n");
+
+}
+/**
+* pABIversion - prints the ABI version
+* @buffer: contains the ABI version
+*
+* Return: void
+*/
+void pABIversion(char *buffer)
+{
+	/*handling the ABI set */
+	ptitle("ABI Version");
+
+	printf("%d", buffer[8]);
+
+	printf("\n");
+}
+
+/**
+ * pentry - prints the ELF entry point address
+ *
+ */
+
+void pentry(void)
+{
+	Elf64_Ehdr h;
+	int i = 0, len = 0;
+	unsigned char *p = (unsigned char *)&h.e_entry;
+
 
 	printf("  Entry point address:               0x");
-
-	sys = ptr[4] + '0';
-	if (sys == '1')
+	if (h.e_ident[EI_DATA] == ELFDATA2MSB)
 	{
-		begin = 26;
-		printf("80");
-		for (i = begin; i >= 22; i--)
-		{
-			if (ptr[i] > 0)
-				printf("%x", ptr[i]);
-			else if (ptr[i] < 0)
-				printf("%x", 256 + ptr[i]);
-		}
-		if (ptr[7] == 6)
-			printf("00");
+		i = h.e_ident[EI_CLASS] == ELFCLASS64 ? 7 : 3;
+		while (!p[i])
+			i--;
+		printf("%x", p[i--]);
+		for (; i >= 0; i--)
+			printf("%02x", p[i]);
+		printf("\n");
+	}
+	else
+	{
+		i = 0;
+		len = h.e_ident[EI_CLASS] == ELFCLASS64 ? 7 : 3;
+		while (!p[i])
+			i++;
+		printf("%x", p[i++]);
+		for (; i <= len; i++)
+			printf("%02x", p[i]);
+		printf("\n");
+	}
+}
+
+/**
+* pos - printing the os/abi
+* @buffer: contains os/abi info
+*
+* Return: void
+*/
+void pos(char *buffer)
+{
+	/* handling the OS ABI set */
+	ptitle("OS/ABI");
+
+	switch (buffer[7])
+	{
+		case ELFOSABI_SYSV:
+			printf("UNIX - System V");
+			break;
+		case ELFOSABI_HPUX:
+			printf("UNIX - HP-UX");
+			break;
+		case ELFOSABI_NETBSD:
+			printf("UNIX - NetBSD");
+			break;
+		case ELFOSABI_LINUX:
+			printf("UNIX - GNU");
+			break;
+		case ELFOSABI_SOLARIS:
+			printf("UNIX - Solaris");
+			break;
+		case ELFOSABI_IRIX:
+			printf("UNIX - IRIX");
+			break;
+		case ELFOSABI_FREEBSD:
+			printf("UNIX - FreeBSD");
+			break;
+		case ELFOSABI_TRU64:
+			printf("UNIX - TRU64");
+			break;
+		default:
+			printf("<unknown: %x>", (unsigned int)buffer[7]);
+	}
+	printf("\n");
+}
+/**
+* pversion- printing version
+* @buffer: contains version
+*
+* Return: void
+*/
+void pversion(char *buffer)
+{
+	/* handling the version set */
+	ptitle("Version");
+
+	switch (buffer[6])
+	{
+		case EV_NONE:
+			printf("0");
+			break;
+		case EV_CURRENT:
+			printf("1 (current)");
+			break;
+		default:
+			printf("%d <unknown: %%lx>", (int)buffer[6]);
 	}
 
-	if (sys == '2')
+	printf("\n");
+}
+/**
+* pdata - printing the data handling
+* @buffer: contains data handling info
+*
+* Return: void
+*/
+void pdata(char *buffer)
+{
+	/* handling the data set */
+	ptitle("Data");
+
+	switch (buffer[5])
 	{
-		begin = 26;
-		for (i = begin; i > 23; i--)
-		{
-			if (ptr[i] >= 0)
-				printf("%02x", ptr[i]);
+		case ELFDATANONE:
+			printf("none");
+			break;
+		case ELFDATA2LSB:
+			printf("2's complement, little endian");
+			break;
+		case ELFDATA2MSB:
+			printf("2's complement, big endian");
+			break;
+		default:
+			printf("<unknown: %x>", (unsigned int)buffer[5]);
+	}
 
-			else if (ptr[i] < 0)
-				printf("%02x", 256 + ptr[i]);
+	printf("\n");
+}
+/**
+* pmagic - printing the Magic we need
+* @buffer: contains magic
+*
+* Return: void
+*/
+void pmagic(char *buffer)
+{
+	/* declarations */
+	int i;
 
-		}
+	/* handling the magics */
+	printf("  Magic:   ");
+	for (i = 0; i < 16; i++)
+		printf("%.2x ", buffer[i]);
+	printf("\n");
+}
+/**
+* pclass - printing the class, in class
+* @buffer: the buffer containing class or none
+*
+* Return: void
+*/
+void pclass(char *buffer)
+{
+	/*handling the class */
+	ptitle("Class");
+
+	switch (buffer[4])
+	{
+		case ELFCLASSNONE:
+			printf("none");
+			break;
+		case ELFCLASS32:
+			printf("ELF32");
+			break;
+		case ELFCLASS64:
+			printf("ELF64");
+			break;
+		default:
+			printf("<unknown: %x>", (unsigned int)buffer[4]);
 	}
 	printf("\n");
 }
-
 /**
- * print_type - prints type
- * @ptr: magic.
- * Return: no return.
- */
-void print_type(char *ptr)
+* ptitle - printing titles since 2020
+* @title: the title
+*
+* Return: void
+*/
+void ptitle(char *title)
 {
-	char type = ptr[16];
+	/* declarations */
+	int size = 37;
+	int len, i;
 
-	if (ptr[5] == 1)
-		type = ptr[16];
-	else
-		type = ptr[17];
-
-	printf("  Type:                              ");
-	if (type == 0)
-		printf("NONE (No file type)\n");
-	else if (type == 1)
-		printf("REL (Relocatable file)\n");
-	else if (type == 2)
-		printf("EXEC (Executable file)\n");
-	else if (type == 3)
-		printf("DYN (Shared object file)\n");
-	else if (type == 4)
-		printf("CORE (Core file)\n");
-	else
-		printf("<unknown: %x>\n", type);
+	/*handling the titles & spaces*/
+	printf("  ");
+	printf("%s:", title);
+	for (len = 0; title[len]; len++)
+		;
+	for (i = 0; i < size - 3 - len; i++)
+		printf(" ");
 }
 
 /**
- * print_osabi - prints osabi
- * @ptr: magic.
- * Return: no return.
- */
-void print_osabi(char *ptr)
+* main - print a ELF header and such
+* @argc: count of args
+* @argv: vector of args
+*
+* Return: int or exit code
+*/
+
+int main(int argc, char **argv)
 {
-	char osabi = ptr[7];
+	/* declarations */
+	int fd, readVal, i;
+	char buffer[16];
+	char match[4] = {0x7f, 'E', 'L', 'F'};
 
-	printf("  OS/ABI:                            ");
-	if (osabi == 0)
-		printf("UNIX - System V\n");
-	else if (osabi == 2)
-		printf("UNIX - NetBSD\n");
-	else if (osabi == 6)
-		printf("UNIX - Solaris\n");
-	else
-		printf("<unknown: %x>\n", osabi);
-
-	printf("  ABI Version:                       %d\n", ptr[8]);
-}
-
-
-/**
- * print_version - prints version
- * @ptr: magic.
- * Return: no return.
- */
-void print_version(char *ptr)
-{
-	int version = ptr[6];
-
-	printf("  Version:                           %d", version);
-
-	if (version == EV_CURRENT)
-		printf(" (current)");
-
-	printf("\n");
-}
-/**
- * print_data - prints data
- * @ptr: magic.
- * Return: no return.
- */
-void print_data(char *ptr)
-{
-	char data = ptr[5];
-
-	printf("  Data:                              2's complement");
-	if (data == 1)
-		printf(", little endian\n");
-
-	if (data == 2)
-		printf(", big endian\n");
-}
-/**
- * print_magic - prints magic info.
- * @ptr: magic.
- * Return: no return.
- */
-void print_magic(char *ptr)
-{
-	int bytes;
-
-	printf("  Magic:  ");
-
-	for (bytes = 0; bytes < 16; bytes++)
-		printf(" %02x", ptr[bytes]);
-
-	printf("\n");
-
-}
-
-/**
- * check_sys - check the version system.
- * @ptr: magic.
- * Return: no return.
- */
-void check_sys(char *ptr)
-{
-	char sys = ptr[4] + '0';
-
-	if (sys == '0')
-		exit(98);
-
-	printf("ELF Header:\n");
-	print_magic(ptr);
-
-	if (sys == '1')
-		printf("  Class:                             ELF32\n");
-
-	if (sys == '2')
-		printf("  Class:                             ELF64\n");
-
-	print_data(ptr);
-	print_version(ptr);
-	print_osabi(ptr);
-	print_type(ptr);
-	print_addr(ptr);
-}
-
-/**
- * check_elf - check if it is an elf file.
- * @ptr: magic.
- * Return: 1 if it is an elf file. 0 if not.
- */
-int check_elf(char *ptr)
-{
-	int addr = (int)ptr[0];
-	char E = ptr[1];
-	char L = ptr[2];
-	char F = ptr[3];
-
-	if (addr == 127 && E == 'E' && L == 'L' && F == 'F')
-		return (1);
-
-	return (0);
-}
-
-/**
- * main - check the code for Holberton School students.
- * @argc: number of arguments.
- * @argv: arguments vector.
- * Return: Always 0.
- */
-int main(int argc, char *argv[])
-{
-	int fd, ret_read;
-	char ptr[27];
-
+	/* too many args? too few? */
 	if (argc != 2)
-	{
-		dprintf(STDERR_FILENO, "Usage: elf_header elf_filename\n");
-		exit(98);
-	}
-
+		errors("Improper usage\n");
+	/* file descriptor, opening */
 	fd = open(argv[1], O_RDONLY);
-
-	if (fd < 0)
+	if (fd == -1)
+		errors("Could not open the file\n");
+	/* reading */
+	readVal = read(fd, buffer, 16);
+	if (readVal == -1)
+		errors("Could not read from the file\n");
+	/* checking for elfage */
+	for (i = 0; i < 4; i++)
 	{
-		dprintf(STDERR_FILENO, "Err: file can not be open\n");
-		exit(98);
+		if (buffer[i] != match[i])
+			errors("Sorry, it's not an ELF file!\n");
 	}
+	/*printing the header! */
+	printf("ELF Header:\n");
+	pmagic(buffer);
+	pclass(buffer);
+	pdata(buffer);
+	pversion(buffer);
+	pos(buffer);
+	pABIversion(buffer);
+	ptype(buffer);
+	pentry();
+	/* close and check for close */
+	if (close(fd))
+		errors("Could not close the file");
 
-	lseek(fd, 0, SEEK_SET);
-	ret_read = read(fd, ptr, 27);
-
-	if (ret_read == -1)
-	{
-		dprintf(STDERR_FILENO, "Err: The file can not be read\n");
-		exit(98);
-	}
-
-	if (!check_elf(ptr))
-	{
-		dprintf(STDERR_FILENO, "Err: It is not an ELF\n");
-		exit(98);
-	}
-
-	check_sys(ptr);
-	close(fd);
 
 	return (0);
 }
